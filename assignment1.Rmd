@@ -1,0 +1,71 @@
+---
+title: "Data Visualisation and Analytics: Assignment 1"
+author: "huangjunfu_27494152"
+date: "02/09/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval=TRUE, error=TRUE)
+library(tidyverse)
+```
+
+
+## Part A
+
+*1. Provide a critical evaluation of Figure 1.*
+
+**•The plot 1 suffers from the Chart junk, there are two unnecessary pictures within the chart.**
+
+**•If we want to know the change of solar generation, it will suffer from the low data density at zero, due to the y axis value, it is hard to see the trend change. And for both of lines, they have small the number of points in the big graph.**
+
+
+*2. Provide a critical evaluation of Figure 2.*
+
+**•The figure 2 suffers from the error of perception due to the 3D rendering. It is not necessary to use three dimensions, because two dimensions will work well. **
+
+**•In other words, there are low data density and low ink ratio in the pie plot. Even thogh the pie use color to distinct the variables, this figure does not show the specific number value for the two variables on the pie. And there is only small proportion data in the plot compared with whole pie. **
+
+*3. Provide a critical evaluation of Figure 3.*
+
+**•This plot suffers from the error of perception due to the x axis value, which needs more more details between two value eg from 0 to 100. Because of this problem, the plot is misleading, we might think there are 4 values in solar energy, 0, 100, 200, 300 respectively.**
+
+**•In addtion, due to the low data ink ratio, we could not see specific detail in the plot. And  the plot does not show the more useful inforamtion. No distinct boundary between the bins. **
+
+**•It also has low data density. There are only a few data bins that are communicated in the plot, **
+
+*4. Provide a critical evaluation of Figure 4.*
+
+**•From the plot,x and y axis are not suitable scale, we can see most of points are located in the left corner, missing data information in here.**
+
+**•In addition, the plot suffer from low data density. X-aixs has some values at zero point, which could not show extra information at zero. **
+
+*5. Provide a critical evaluation of the text of the report.*
+
+**The report might not describe the true information from the plots. Because of y-axis scale in the figure 1, the solar line looks like a straight line and does not show any trend in the plot, the report should not say 'scarcely grown' for the solar energy. In addtion, the report uses minimum solar energy to compare with the total coal energy.it is unreasonable and unfair to say "solar energy is close to the level of generation from the coal". In the figure 3, due to the x-axis scale, there are only 4 bins in the histogarm plots(0,100,200,300), and y-axis unit is count rather than the percentage, thus, the report may mislead the information: it does not mean more than 75% of months, and values in the first bin are not equal to zero. That means there are over 75 months values from 0 to 100. For the figure 4, it might have positive correlation in the plot, but correlation does not mean causation. We might not prove that solar energy is too expensive from this plot, we need to explore more variable for the price.**
+
+**Finally, for the conslusion part, based on the previous plots, the report does not provide any evidence that the cheapest source is coal, and construction of more coal-fired power plants is not only method to reduce the cost. The report is too simple and one-sided, it does not explore details for the price (variables are limited). And the report exists some subjective opinions and not accurate plots format chosen, the report analysis is not reproduced for other variables.**
+
+
+*6. Discuss any positive aspects of the report*
+
+**There is a good background description at the beginning. **
+
+**In addtion, the report might describe good explantion for coal line in the figure 1, and it also explain the reasonable reason for the sudden drop. In the plot, even though there is no specific number on the pie, the report do the good summary based on the plot. In the figure 4, the plot reflects positive correaltion, there is a good assumption for solar energy with high price, but the report might need more evidence and details. **
+
+**The report also provides one suggestion for the future energy generation.**
+
+
+## Part B
+```{r}
+electricity<-read_csv('electricitydata_assignment1.csv')
+electricity %>% ggplot(aes(x=SolarRooftop)) + 
+  geom_histogram(bins = 40, boundary=1,binwidth = 10,col='red') +
+  xlab("Solar(Rooftop)  GW/h") + 
+  ggtitle("Monthly electricity generation in Victoria from solar energy")
+
+
+```
+
