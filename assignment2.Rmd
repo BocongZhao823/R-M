@@ -29,3 +29,46 @@ animal %>% select(-year,-Total,-outcome) %>%
    theme(axis.text.x = element_blank())
 ```
 
+###修改上述的code ，主要在line 29进行修改
+
+animal %>% select(-year,-Total,-outcome) %>%
+  pivot_longer(-'animal_type',names_to='State',values_to='value') %>%
+  ggplot(aes(x=animal_type,y=value)) +
+  geom_boxplot()+
+  facet_wrap(~State,ncol=4,scales="free_y")+
+   theme(axis.text.x = element_text(angle = 40))
+   
+   
+   
+# tidy data
+
+animal$animal_type <-as.factor(animal$animal_type)
+animal$outcome <- as.factor(animal$outcome)
+animal%>% summary()
+
+#there are a few missing value
+
+#plots
+
+animal %>%select(-(4:11)) %>% ggplot(aes(x=year,y=Total,col=outcome)) +
+  geom_line() +
+  facet_wrap(~animal_type,scales = 'free_y') +
+  ggtitle('p1')
+
+
+animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(x=year,y=to)) +
+  geom_point() + geom_smooth() +
+  facet_wrap(~animal_type,scales = 'free_y')+
+  ggtitle('p2')
+
+animal%>% select(-Total)%>%
+  pivot_longer(-c('animal_type',year,outcome),names_to='State',values_to='value')  %>% 
+  ggplot(aes(x=year,y=value)) +
+  geom_point(size=0.2) + 
+  facet_grid(rows = vars(outcome),cols = vars(State),scales = 'free_y') +
+  theme(axis.text.x = element_text(size=10,angle = 40))+
+  ggtitle('p3')
+  
+  
+  #p3 could be ignored.
+  
