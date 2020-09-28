@@ -36,7 +36,10 @@ animal %>% select(-year,-Total,-outcome) %>%
   ggplot(aes(x=animal_type,y=value)) +
   geom_boxplot()+
   facet_wrap(~State,ncol=4,scales="free_y")+
-   theme(axis.text.x = element_text(angle = 40))
+   theme(axis.text.x = element_text(angle = 40))+
+  ggtitle("Animal Values' Variation Trends in Different States")+
+  xlab("Animal Type") +
+  ylab("Value") 
    
    
    
@@ -53,13 +56,18 @@ animal%>% summary()
 animal %>%select(-(4:11)) %>% ggplot(aes(x=year,y=Total,col=outcome)) +
   geom_line() +
   facet_wrap(~animal_type,scales = 'free_y') +
-  ggtitle('p1')
+  ggtitle("Different States' Animal Values in Different Years")+
+  xlab("Year") +
+  ylab("Total Value") 
 
 
 animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(x=year,y=to)) +
   geom_point() + geom_smooth() +
+  facet_wrap(~animal_type,scales = 'free_y') +
   facet_wrap(~animal_type,scales = 'free_y')+
-  ggtitle('p2')
+  ggtitle("Number of Animals Varies by Years")+
+  xlab("Year") +
+  ylab("Total Values") 
 
 animal%>% select(-Total)%>%
   pivot_longer(-c('animal_type',year,outcome),names_to='State',values_to='value')  %>% 
