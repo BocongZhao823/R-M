@@ -31,6 +31,7 @@ animal %>% select(-year,-Total,-outcome) %>%
 
 ###修改上述的code ，主要在line 29进行修改
 
+```{r}
 animal %>% select(-year,-Total,-outcome) %>%
   pivot_longer(-'animal_type',names_to='State',values_to='value') %>%
   ggplot(aes(x=animal_type,y=value)) +
@@ -40,27 +41,27 @@ animal %>% select(-year,-Total,-outcome) %>%
   ggtitle("Animal Values' Variation Trends in Different States")+
   xlab("Animal Type") +
   ylab("Value") 
-   
+  ```
    
    
 # tidy data
-
+```{r}
 animal$animal_type <-as.factor(animal$animal_type)
 animal$outcome <- as.factor(animal$outcome)
 animal%>% summary()
+```
+# there are a few missing value
 
-#there are a few missing value
-
-#plots
-
+# plots
+```{r}
 animal %>%select(-(4:11)) %>% ggplot(aes(x=year,y=Total,col=outcome)) +
   geom_line() +
   facet_wrap(~animal_type,scales = 'free_y') +
   ggtitle("Different States' Animal Values in Different Years")+
   xlab("Year") +
   ylab("Total Value") 
-
-
+```
+```{r}
 animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(x=year,y=to)) +
   geom_point() + geom_smooth() +
   facet_wrap(~animal_type,scales = 'free_y') +
@@ -68,7 +69,8 @@ animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(
   ggtitle("Number of Animals Varies by Years")+
   xlab("Year") +
   ylab("Total Values") 
-
+```
+```{r}
 animal%>% select(-Total)%>%
   pivot_longer(-c('animal_type',year,outcome),names_to='State',values_to='value')  %>% 
   ggplot(aes(x=year,y=value)) +
@@ -76,7 +78,133 @@ animal%>% select(-Total)%>%
   facet_grid(rows = vars(outcome),cols = vars(State),scales = 'free_y') +
   theme(axis.text.x = element_text(size=10,angle = 40))+
   ggtitle('p3')
-  
+ ```
   
   #p3 could be ignored.
+  
+# Data peparation 
+
+```{r}
+# Calculate Dog numbers in Year 2018
+Dog <- animal %>% 
+  filter(animal_type=="Dogs", year == "2018") # %>% 
+  #na.omit()
+colSums(Dog[c("NSW", "VIC", "QLD","SA","WA","TAS", "NT", "ACT")])
+DogData <- c(372, 7381, 11517 , 2442, 821 , 452, 10075, 803 ,0)
+sf_oz<- ozmap_data("states")
+sf_oz$DogData <- DogData
+
+# Calculate Cat numbers in Year 2018
+Cat <- animal %>% 
+  filter(animal_type=="Cats", year == "2018") # %>% 
+  #na.omit()
+colSums(Cat[c("NSW", "VIC", "QLD","SA","WA","TAS", "NT", "ACT")])
+CatData <- c(452, 12272, 13648, 5070, 940, 1325, 15688, 1775,0)
+sf_oz1<- ozmap_data("states")
+sf_oz1$CatData <- CatData
+
+# Calculate Horses numbers in Year 2018
+Horses <- animal %>% 
+  filter(animal_type=="Horses", year == "2018") # %>% 
+  #na.omit()
+colSums(Horses[c("NSW", "VIC", "QLD","SA","WA","TAS", "NT", "ACT")])
+HorseData <- c(0, 107, 125, 27, 40, 7, 173, 0 ,0)
+sf_oz2<- ozmap_data("states")
+sf_oz2$HorseData <- HorseData
+
+# Calculate Livestock numbers in Year 2018
+Livestock <- animal %>% 
+  filter(animal_type=="Livestock", year == "2018") # %>% 
+  #na.omit()
+colSums(Livestock[c("NSW", "VIC", "QLD","SA","WA","TAS", "NT", "ACT")])
+LivestockData <- c(9, 326, 1597, 194, 169, 86, 847, 81,0)
+sf_oz3<- ozmap_data("states")
+sf_oz3$LivestockData <- LivestockData
+
+# Calculate Other Animals numbers in Year 2018
+Other_Animals <- animal %>% 
+  filter(animal_type=="Other Animals", year == "2018") # %>% 
+  #na.omit()
+colSums(Other_Animals[c("NSW", "VIC", "QLD","SA","WA","TAS", "NT", "ACT")])
+OtherAnimalData <- c(10,1096,2236,590,191,145,2380,494,0 )
+sf_oz4<- ozmap_data("states")
+sf_oz4$OtherAnimalData <- OtherAnimalData
+
+# Calculate Wildlife numbers in Year 2018
+Wildlife <- animal %>% 
+  filter(animal_type=="Wildlife", year == "2018") # %>% 
+  #na.omit()
+colSums(Wildlife[c("NSW", "VIC", "QLD","SA","WA","TAS", "NT", "ACT")])
+WildlifeData <- c(0, 1112, 25385, 267, 22, 19, 1038, 340 ,0 )
+sf_oz5$WildlifeData <- WildlifeData
+sf_oz5<- ozmap_data("states")
+```
+
+# Ploting Maps
+```{r}
+library(ozmaps)
+library(ggplot2)
+library(sf)
+#sf_oz$NAME
+
+P1<- ggplot(data=sf_oz, aes(fill=DogData))+
+  geom_sf()+
+  scale_fill_gradient(low="green", high = "red")+
+  #labs(title = "Map of Australia States", subtitle = "Showing Dog Amounts in Year 2018")+
+  theme_classic()+
+  theme(axis.line=element_blank(), 
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+P2<-ggplot(data=sf_oz, aes(fill=CatData))+
+  geom_sf()+
+  scale_fill_gradient(low="green", high = "red")+
+  #labs(title = "Map of Australia States", subtitle = "Showing Cat Amounts in Year 2018")+
+  theme_classic()+
+  theme(axis.line=element_blank(), 
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+P3<- ggplot(data=sf_oz, aes(fill=HorseData))+
+  geom_sf()+
+  scale_fill_gradient(low="green", high = "red")+
+  #labs(title = "Map of Australia States", subtitle = "Showing Horse Amounts in Year 2018")+
+  theme_classic()+
+  theme(axis.line=element_blank(), 
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+P4<- ggplot(data=sf_oz, aes(fill=LivestockData))+
+  geom_sf()+
+  scale_fill_gradient(low="green", high = "red")+
+  #labs(title = "Map of Australia States", subtitle = "Showing Livestock Amounts in Year 2018")+
+  theme_classic()+
+  theme(axis.line=element_blank(), 
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+P5<-ggplot(data=sf_oz, aes(fill=OtherAnimalData))+
+  geom_sf()+
+  scale_fill_gradient(low="green", high = "red")+
+ # labs(title = "Map of Australia States", subtitle = "Showing Other Animal Amounts in Year 2018")+
+  theme_classic()+
+  theme(axis.line=element_blank(), 
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+P6<-ggplot(data=sf_oz, aes(fill=WildlifeData))+
+  geom_sf()+
+  scale_fill_gradient(low="green", high = "red")+
+#labs(title = "Map of Australia States", subtitle = "Showing Wildlife Amounts in Year 2018")+
+  theme_classic()+
+  theme(axis.line=element_blank(), 
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+library(ggpubr)
+figure <- ggarrange(P1, P2, P3,P4,P5,P6,
+                   # labels = c("Dog", "Cat", "Horse", "Livestock","Other Animal","Wildlife"),
+                    ncol = 3, nrow = 3)
+figure
+```
   
