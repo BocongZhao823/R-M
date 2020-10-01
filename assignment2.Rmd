@@ -32,17 +32,14 @@ animal %>% select(-year,-Total,-outcome) %>%
 ###修改上述的code ，主要在line 29进行修改
 
 ```{r}
-animal %>% select(-year,-Total,-outcome) %>%
-  pivot_longer(-'animal_type',names_to='State',values_to='value') %>%
+animal %>% select(-Total,-outcome) %>%
+  pivot_longer(cols = -c('animal_type','year'),names_to='State',values_to='value') %>%
   ggplot(aes(x=animal_type,y=value)) +
-  geom_boxplot()+
-  facet_wrap(~State,ncol=4,scales="free_y")+
-   theme(axis.text.x = element_text(angle = 40))+
-  ggtitle("Animal Values' Variation Trends in Different States")+
-  xlab("Animal Type") +
-  ylab("Value") 
+  geom_boxplot()+ 
+  facet_wrap(~State,ncol=4,scales="free_y")+ scale_y_log10()+ 
+  theme(axis.text.x = element_text(angle = 40)) +ylab("log(value)")+xlab("Animal Type") + ggtitle("Figure 1:The boxplot of animal in different State")
   ```
-   
+ 
    
 # tidy data
 ```{r}
@@ -56,20 +53,17 @@ animal%>% summary()
 ```{r}
 animal %>%select(-(4:11)) %>% ggplot(aes(x=year,y=Total,col=outcome)) +
   geom_line() +
-  facet_wrap(~animal_type,scales = 'free_y') +
-  ggtitle("Different States' Animal Values in Different Years")+
-  xlab("Year") +
-  ylab("Total Value") 
+  facet_wrap(~animal_type,scales = 'free_y') + ylab('The number of animal') +
+  ggtitle('Figure 2: The different outcomes in different year for each animal')
 ```
 ```{r}
 animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(x=year,y=to)) +
   geom_point() + geom_smooth() +
-  facet_wrap(~animal_type,scales = 'free_y') +
-  facet_wrap(~animal_type,scales = 'free_y')+
-  ggtitle("Number of Animals Varies by Years")+
-  xlab("Year") +
-  ylab("Total Values") 
+  facet_wrap(~animal_type,scales = 'free_y')+ ylab('The number of animal')+
+  ggtitle('Figure 3: The trend of animal for the year')
+
 ```
+#不用了
 ```{r}
 animal%>% select(-Total)%>%
   pivot_longer(-c('animal_type',year,outcome),names_to='State',values_to='value')  %>% 
