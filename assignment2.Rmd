@@ -61,8 +61,21 @@ animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(
   geom_point() + geom_smooth() +
   facet_wrap(~animal_type,scales = 'free_y')+ ylab('The number of animal')+
   ggtitle('Figure 3: The trend of animal for the year')
-
 ```
+
+## Explanation
+The plots show year against total values, faceted by animal type. From the data description, animal types include cats, dogs, horses, livestock, wildlife and other animals. Thus, the graph shows the overall variation tendency for each different animal through years. 
+
+Cats and dogs fluctuate on a similar scale, around 0 to 70000. The number of cats show a sharp increase from year 2000 to year 2007 with the amount increased from 48798 to 65380. Then it shows an obvious decreasing pattern afterwards with the amount decrease to 51688. From year 2015 onwards, it appears a slowly increasing pattern with the amount increased to 53554.
+
+There is a tiny decreasing in the number of dogs between year 1999 to year 2001 with amount between 67204 to 63613. Then it shows a slowly increasing pattern until year 2008 with the amount up to 69383. Finally, it suddenly appears a sharp decreasing afterwards with the amount to only 365-6.
+
+The amount of horses and other animals both appear a overall sharp increasing pattern. The difference is that the number of horses show an overall increasing pattern, even though there are some fluctuations in between. The amount is 118 in year 1999 and at the final collected data in year 2018, the amount has increased to 516. However, as the scale is between 0 to 600, horse still has the smallest amount among all types of animals. While, the number of other animals show an obviously sharp increasing pattern until year 2012, however, it shows a slowly decreasing pattern afterwards.
+
+The amount of livestock does not have an obviously changing pattern compare to other types of animals.  There is a stable tiny increasing pattern before year 2006 and a stable tiny decreasing pattern after year 2011. Within year 2006 and 2011 is the bloom period for the amount of livestock, with the amount increased from 2842 to 3691.
+
+The amount of wildlife has a relatively stable pattern until year 2007. Then it appears an obviously increasing pattern afterwards with the amount increased from 11973 to 30151.
+
 #不用了
 ```{r}
 animal%>% select(-Total)%>%
@@ -202,3 +215,10 @@ figure <- ggarrange(P1, P2, P3,P4,P5,P6,
 figure
 ```
   
+## Explanation 
+
+The map shows the number of species in each Australian state in 2018 in the form of visual graphics, states with relatively small numbers of animals appearing in green and relatively large numbers of animals in red. Showing the number of different animals on the map of Australia can help readers understand, explore and compare the "relationships" between each state.
+
+Looking vertically to compare the amount of different type of animals within the same state in 2018. Overall, Queensland has the largest amounts of animals for dog, livestock and wildlife. Northern Territory has the largest amounts of animals for cat, horse, other animals. New South Wales has relatively smaller amount for all type of animals. As for wildlife, except Queensland, other states have similar situations. 
+
+Looking horizontally to compare the scale of different type of animals among different states in 2018.  Horse has the smallest scale indicates overall it has the smallest number compares to other type of animals in every state. While, wildlife has the largest scale indicates overall it has the largest number compares to other type of animals in every state.
