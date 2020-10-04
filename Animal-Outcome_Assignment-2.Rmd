@@ -3,8 +3,9 @@ title: "Assignment 2"
 author: "Junfu Huang_27494152; Bocong Zhao_28305329"
 date: "23/09/2020"
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r initial, echo = FALSE, cache = FALSE, results = 'hide'}
@@ -20,6 +21,8 @@ library(ggpubr)
 ```
 
 # Introduction 
+
+**Australia is a suitable place for animals and there are abundant species. People raise different animals and live peacefully with wild animals. However, a certain number of animals are not treated properly, RSPCA which is the largest animal welfare organization in Australia receives these animals and solves problems every year. The dataset is collected through RSPCA's statistics on animal outcomes in every state and year. Based on the dataset, our report provides an analysis of the change in the number of each animals' outcomes for different states from 1999 to 2018.**
 
 ```{r , message=FALSE, include = FALSE}
 tuesdata <- tidytuesdayR::tt_load(2020, week = 30)
@@ -46,6 +49,7 @@ animal %>% select(-Total,-outcome) %>%
 ```
 
 **Figure 1 portrays the distribution of the total number of different animal types per year each outcome in each state. Combining with summary statistics, there is a huge gap between different animal sizes, therefore, we choose to transform the value through log y-axis in order to reduce the effect of variance. From figure 1, we find that most states would have the highest distribution and median value of cat or dog (25% to 75%). From the boxplot, even though we have transformed the value, it still has outliers in the plot, such as dog's values. It means that there is small number of dogs in some years in some states. **
+
 **Because people are more likely to adopt cats or dogs, Vic and NSW are the two most populous states, that is why Victoria and New South Wales have the highest value. By contrast, for example, Western Australia has many desserts, and is sparsely populated. It might have less value for dog or cat than VIC or NSW. Apart from the cat or dog, QLD has large distribution for wildlife. It might be because the living environment is good for wildlife, such as lizards, kangaroos.**
 
 ## Figure 2
@@ -114,7 +118,7 @@ sf_oz5$WildlifeData <- WildlifeData
 P1<- ggplot(data=sf_oz, aes(fill=DogData))+
   geom_sf()+
   scale_fill_gradient(low="green", high = "red")+
-  #labs(title = "Map of Australia States", subtitle = "Showing Dog Amounts in Year 2018")+
+  labs(title ="Dog Amounts")+
   theme_classic()+
   theme(axis.line=element_blank(), 
         axis.text = element_blank(),
@@ -123,7 +127,7 @@ P1<- ggplot(data=sf_oz, aes(fill=DogData))+
 P2<-ggplot(data=sf_oz, aes(fill=CatData))+
   geom_sf()+
   scale_fill_gradient(low="green", high = "red")+
-  #labs(title = "Map of Australia States", subtitle = "Showing Cat Amounts in Year 2018")+
+  labs(title = "Cat Amounts")+
   theme_classic()+
   theme(axis.line=element_blank(), 
         axis.text = element_blank(),
@@ -132,7 +136,7 @@ P2<-ggplot(data=sf_oz, aes(fill=CatData))+
 P3<- ggplot(data=sf_oz, aes(fill=HorseData))+
   geom_sf()+
   scale_fill_gradient(low="green", high = "red")+
-  #labs(title = "Map of Australia States", subtitle = "Showing Horse Amounts in Year 2018")+
+  labs(title ="Horse Amounts")+
   theme_classic()+
   theme(axis.line=element_blank(), 
         axis.text = element_blank(),
@@ -141,7 +145,7 @@ P3<- ggplot(data=sf_oz, aes(fill=HorseData))+
 P4<- ggplot(data=sf_oz, aes(fill=LivestockData))+
   geom_sf()+
   scale_fill_gradient(low="green", high = "red")+
-  #labs(title = "Map of Australia States", subtitle = "Showing Livestock Amounts in Year 2018")+
+  labs(title ="Livestock Amounts")+
   theme_classic()+
   theme(axis.line=element_blank(), 
         axis.text = element_blank(),
@@ -150,7 +154,7 @@ P4<- ggplot(data=sf_oz, aes(fill=LivestockData))+
 P5<-ggplot(data=sf_oz, aes(fill=OtherAnimalData))+
   geom_sf()+
   scale_fill_gradient(low="green", high = "red")+
- # labs(title = "Map of Australia States", subtitle = "Showing Other Animal Amounts in Year 2018")+
+  labs(title = "Other Animal Amounts")+
   theme_classic()+
   theme(axis.line=element_blank(), 
         axis.text = element_blank(),
@@ -159,7 +163,7 @@ P5<-ggplot(data=sf_oz, aes(fill=OtherAnimalData))+
 P6<-ggplot(data=sf_oz, aes(fill=WildlifeData))+
   geom_sf()+
   scale_fill_gradient(low="green", high = "red")+
-#labs(title = "Map of Australia States", subtitle = "Showing Wildlife Amounts in Year 2018")+
+ labs(title = "Wildlife Amounts")+
   theme_classic()+
   theme(axis.line=element_blank(), 
         axis.text = element_blank(),
@@ -167,7 +171,7 @@ P6<-ggplot(data=sf_oz, aes(fill=WildlifeData))+
 
 figure <- ggarrange(P1, P2, P3,P4,P5,P6,
                    # labels = c("Dog", "Cat", "Horse", "Livestock","Other Animal","Wildlife"),
-                    ncol = 3, nrow = 3)
+                    ncol = 2, nrow = 3)
 figure
 ```
 
@@ -178,6 +182,7 @@ figure
 **Looking horizontally to compare the scale of different types of animals among different states in 2018.  Horse has the smallest scale indicated overall it has the smallest number compared to other types of animals in every state. While wildlife has the largest scale indicated overall it has the largest number compared to other types of animals in every state.**
 
 ## Figure 3
+
 ```{r}
 animal %>%select(-(4:11)) %>% ggplot(aes(x=year,y=Total,col=outcome)) +
   geom_line() +
@@ -190,6 +195,7 @@ animal %>%select(-(4:11)) %>% ggplot(aes(x=year,y=Total,col=outcome)) +
 **The RSPCA may choose to help dogs or cats to find the new owners rather than let them die. Conversely, when RSPCA received the wildlife, it means that wildlife may be difficult to survive due to injury or other reasons, the RSPCA might choose euthanasia.  **
 
 ## Figure 4
+
 ```{r}
 animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(x=year,y=to)) +
   geom_point() + geom_smooth() +
@@ -211,4 +217,10 @@ animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(
 
 # Limitation and Conclusion 
 
-**Our analysis finds cats and dogs are easier to rehomed or reclaimed, but the number of euthanized is still not small. Therefore, we may want to know what kinds of cats or dogs are more likely to rehomed, reclaimed, and why cats or dogs would be euthanized. On the other hand, Australia is rich in wildlife species. The report could not provide evidence for why wildlife is euthanized based on the dataset.**
+**The dataset only contains the number of rehomed, reclaimed and euthanized varioused by animal type, states and years. But it does not give any information about the factors which influence people to make the decisions about rehomed, reclaimed and euthanized. This maybe due to people's psychological factors which are hard to measured and reflect on data.**
+
+**More specific, our analysis finds cats and dogs are easier to rehomed or reclaimed, but the number of euthanized is still not small. Therefore, we may want to know what kinds of cats or dogs are more likely to rehomed, reclaimed, and why cats or dogs would be euthanized. This maybe due to people's attitudes to dogs and cats' characteristics are very unique and hard to give a common summary and statistic. Or even lack conditions such as technique, labor, time to collect such information.**
+
+**On the other hand, Australia is rich in wildlife species. The dataset does not classify the type of wild animals. As the range of wild animals is very board which indicates the bodily form and species would varied by type. And further influence the number of rehomed or reclaimed. However, the report could not provide evidence for why wildlife is euthanized based on the dataset.**
+
+**Talking about future behavior and advice. As from figure 4, there is an increasing trend of wild animals. So we might need to consider that apart from euthanized, can we do better for them. Also, there is an decreasing pattern for dogs and cats, maybe indicates that people are love their pets more and less discard them.**
