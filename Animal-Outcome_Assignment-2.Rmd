@@ -3,9 +3,9 @@ title: "Assignment 2"
 author: "Junfu Huang_27494152; Bocong Zhao_28305329"
 date: "23/09/2020"
 output:
-  word_document: default
-  html_document: default
   pdf_document: default
+  html_document: default
+  word_document: default
 ---
 
 ```{r initial, echo = FALSE, cache = FALSE, results = 'hide'}
@@ -30,12 +30,6 @@ animal <- tuesdata$animal_outcomes
 ```
 
 # Data Analysis 
-
-```{r}
-animal$animal_type <-as.factor(animal$animal_type)
-animal$outcome <- as.factor(animal$outcome)
-animal%>% summary()
-```
 
 ## figure 1
 
@@ -224,3 +218,13 @@ animal %>% group_by(animal_type,year)%>%summarise(to=sum(Total)) %>% ggplot(aes(
 **On the other hand, Australia is rich in wildlife species. The dataset does not classify the type of wild animals. As the range of wild animals is very board which indicates the bodily form and species would varied by type. And further influence the number of rehomed or reclaimed. However, the report could not provide evidence for why wildlife is euthanized based on the dataset.**
 
 **Talking about future behavior and advice. As from figure 4, there is an increasing trend of wild animals. So we might need to consider that apart from euthanized, can we do better for them. Also, there is an decreasing pattern for dogs and cats, maybe indicates that people are love their pets more and less discard them.**
+
+# Appendix & Reference 
+
+Thomas Mock, Georgios Karamanis (2020). Australian Pets: Animal Outcomes  https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-21/readme.md
+
+```{r}
+animal$animal_type <-as.factor(animal$animal_type)
+animal$outcome <- as.factor(animal$outcome)
+animal%>% summary()
+```
